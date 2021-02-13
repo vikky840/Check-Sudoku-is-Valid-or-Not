@@ -1,0 +1,113 @@
+import java.util.*;
+public class Main {
+    static int check(int x) {
+        return x == 1 ? 0 : 1;
+    }
+    static int CheckSquareBox(int n, int[] b) {
+        int p = 0;
+        int k = 0;
+        for (int i = 0; i < n * n; i++) {
+            for (int j = 0; j < n * n; j++) {
+                if (b[i] == b[j]) {
+                    p++;
+                }
+                if (p == 2) {
+                    k = 1;
+                    break;
+                }
+            }
+            p = 0;
+            if (k == 1) {
+                break;
+            }
+        }
+        return k;
+    }
+    static int CheckRow(int n, int[][] a) {
+        int p = 0;
+        int k = 0;
+        for (int j = 0; j < n * n; j++) {
+            for (int i = 0; i < n * n; i++) {
+                if (a[j][n * n - 2] == a[n * n - 2][i]) {
+                    p++;
+                }
+                if (p == 2) {
+                    k = 1;
+                    break;
+                }
+            }
+            p = 0;
+            if (k == 1) {
+                break;
+            }
+        }
+        return k;
+    }
+    static int CheckColumn(int n, int[][] a) {
+        int p = 0;
+        int k = 0;
+        for (int j = 0; j < n * n; j++) {
+            for (int i = 0; i < n * n; i++) {
+                if (a[n + 1][j] == a[i][n + 1]) {
+                    p++;
+                }
+                if (p == 2) {
+                    k = 1;
+                    break;
+                }
+            }
+            p = 0;
+            if (k == 1) {
+                break;
+            }
+        }
+        return k;
+    }
+    static int[] StoreSquareBox(int n, int[][] a) {
+        int p = 0;
+        int[] b = new int[n * n];
+        for (int i = 0; i < n; i++) {
+            for (int j = n * n - n; j < n * n; j++) {
+                b[p] = a[i][j];
+                p++;
+            }   
+        }
+        return b;
+    }
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int k = 0;
+        if (n == 1) { // if sudoku size is one.
+            int x = sc.nextInt();
+            k = check(x);
+        }
+        int[][] a = new int[n * n][n * n];
+        if (n >= 2 && n <= 10) {  // if sudoku size greater than one and less than equal ten.
+            for (int i = 0; i < n * n; i++) {
+                for (int j = 0; j < n * n; j++) {
+                    a[i][j] = sc.nextInt();
+                    if (a[i][j] > n * n || a[i][j] < 1) {  // checking range.
+                        k = 1;
+                    }
+                }
+            }
+            int[] b = StoreSquareBox(n, a);
+            if (k == 0) {
+                k = CheckColumn(n, a);
+            }
+            if (k == 0) {
+                k = CheckRow(n, a);
+            }
+            if (k == 0) {
+                k = CheckSquareBox(n, b);
+            }
+        }
+        if (k == 0) {
+            System.out.println("VALID");
+        } else if (k == 1) {
+            System.out.println("NOT VALID");
+        }
+    }
+}
